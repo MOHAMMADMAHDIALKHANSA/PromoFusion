@@ -1,0 +1,295 @@
+﻿@{
+    ViewData["Title"] = "View Posts";
+}
+
+<link href="~/assets/css/main.css" rel="stylesheet" />
+<script src="~/assets/js/main.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-2E6/JoxkBRP7U6AlJtf1X3bmKZOJnmWaCxIlk0N7FDkzVnMfs4Fqu7SDVp34njbTzca/jKtZ3DXZg8lzRf9x3w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<style>
+    .btn {
+        margin-top: 10px;
+        margin-right: 5px;
+        font-size: 16px;
+        padding: 10px 20px;
+        background-color: #008080;
+        color: #fff;
+        border: 2px solid #008080;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
+
+        .btn:hover {
+            background-color: #fff;
+            color: #008080;
+        }
+
+    .portfolio-wrap {
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        padding-bottom: 60px; /* Ensure space for buttons */
+    }
+
+        .portfolio-wrap img {
+            width: 100%;
+            height: 300px; /* Set a fixed height for uniformity */
+            display: block;
+            object-fit: cover; /* Ensures the image covers the area */
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-wrap:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+    .portfolio-info {
+        position: absolute;
+        bottom: 60px; /* Ensure space for buttons */
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .portfolio .play-btn {
+        width: 94px;
+        height: 94px;
+        background: radial-gradient(var(--color-primary) 50%, rgba(0, 131, 116, 0.4) 52%);
+        border-radius: 50%;
+        display: block;
+        position: absolute;
+        left: calc(50% - 47px);
+        top: calc(50% - 47px);
+        overflow: hidden;
+        z-index: 10; /* Ensures the play button stays on top */
+    }
+
+        .portfolio .play-btn:before {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            animation-delay: 0s;
+            animation: pulsate-btn 2s;
+            animation-direction: forwards;
+            animation-iteration-count: infinite;
+            animation-timing-function: steps;
+            opacity: 1;
+            border-radius: 50%;
+            border: 5px solid rgba(0, 131, 116, 0.7);
+            top: -15%;
+            left: -15%;
+            background: rgba(198, 16, 0, 0);
+        }
+
+        .portfolio .play-btn:after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translateX(-40%) translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 15px solid #fff;
+            z-index: 100;
+            transition: all 400ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
+        }
+
+        .portfolio .play-btn:hover:before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translateX(-40%) translateY(-50%);
+            width: 0;
+            height: 0;
+            border: none;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 15px solid #fff;
+            z-index: 200;
+            animation: none;
+            border-radius: 0;
+        }
+
+        .portfolio .play-btn:hover:after {
+            border-left: 15px solid var(--color-primary);
+            transform: scale(20);
+        }
+
+    .portfolio-buttons {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        justify-content: center;
+    }
+
+        .portfolio-buttons .btn {
+            margin: 0 5px;
+        }
+
+    .video-play-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 3rem;
+        color: rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+        .video-play-icon:hover {
+            color: rgba(255, 255, 255, 1);
+        }
+
+    .section-header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+        .section-header .btn-upload {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+    .image-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .image {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+</style>
+
+<section id="portfolio" class="portfolio sections-bg">
+    <div class="container" data-aos="fade-up">
+        <div class="section-header">
+            <h2 style="color: var(--color-primary);">P<span style="color: #fd5f00;">o</span>s<span style="color: #fd5f00;">t</span>s</h2>
+            <button type="button" class="btn btn-primary btn-upload" data-toggle="modal" data-target="#addPostModal">
+                Upload Post
+            </button>
+        </div>
+        <div class="portfolio-isotope" data-portfolio-filter="*" data-portfolio-layout="masonry" data-portfolio-sort="original-order" data-aos="fade-up" data-aos-delay="100">
+            <div class="row gy-4 portfolio-container">
+                <!-- Dynamic Posts -->
+                @foreach (var post in Model)
+                {
+
+
+                    <div class="col-xl-4 col-md-6 portfolio-item filter-branding">
+                        <div class="portfolio-wrap">
+
+                            <a href="@post.Content" target="_blank">
+                                <div class="image-container">
+                                    <div class="play-btn"></div>
+                                    <img src="@post.picContent" class="img-fluid" alt="Video Thumbnail">
+                                </div>
+                            </a>
+                            <div class="portfolio-info">
+                                <h4><a href="@post.Content" target="_blank">@post.Caption</a></h4>
+                                <p>@post.CreatedAt.ToString("MMMM dd, yyyy")</p>
+                            </div>
+                            <div class="portfolio-buttons">
+                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editPostModal-@post.PostId">Edit</button>
+                                <form asp-action="DeletePost" asp-controller="MarketingAgency" method="post" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                    <input type="hidden" name="id" value="@post.PostId" />
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Edit Modal -->
+                    <div class="modal fade" id="editPostModal-@post.PostId" tabindex="-1" role="dialog" aria-labelledby="editPostModalLabel-@post.PostId" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editPostModalLabel-@post.PostId" style="color: #fd5f00;">Edit Post</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form asp-action="EditPost" asp-controller="MarketingAgency" method="post">
+                                        <input type="hidden" name="id" value="@post.PostId" />
+                                        <div class="form-group">
+                                            <label for="caption" style="color: var(--color-primary);">Caption</label>
+                                            <input type="text" class="form-control" id="caption" name="caption" value="@post.Caption" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="videoLink" style="color: var(--color-primary);">Video Link</label>
+                                            <input type="url" class="form-control" id="videoLink" name="videoLink" value="@post.Content" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="pictureLink" style="color: var(--color-primary);">Picture Link</label>
+                                            <input type="url" class="form-control" id="pictureLink" name="pictureLink" value="@post.picContent" required />
+                                        </div>
+                                        <button type="submit" class="btn btn-success">Save Changes</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <br />
+    <a asp-controller="MarketingAgency" asp-action="Profile" class="btn btn-primary">Back to My Profile</a>
+
+</section>
+
+<!-- Add Post Modal -->
+<div class="modal fade" id="addPostModal" tabindex="-1" role="dialog" aria-labelledby="addPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title " id="addPostModalLabel" style="color: #fd5f00;">Upload Post</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="UploadPost" asp-controller="MarketingAgency" method="post">
+                    <input type="hidden" name="id" value="@ViewBag.MarketingAgencyId" />
+                    <div class="form-group">
+                        <label for="caption" style="color: var(--color-primary);">Caption</label>
+                        <input type="text" class="form-control" id="caption" name="caption" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="videoLink" style="color: var(--color-primary);">Video Link</label>
+                        <input type="url" class="form-control" id="videoLink" name="videoLink" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="pictureLink" style="color: var(--color-primary);">Picture Link</label>
+                        <input type="url" class="form-control" id="pictureLink" name="pictureLink" required />
+                    </div>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

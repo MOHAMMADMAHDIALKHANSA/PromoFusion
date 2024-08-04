@@ -1,0 +1,70 @@
+﻿@model MarketingHub.Models.MarketingAgencyCategory
+
+@{
+    ViewBag.Title = "Add Agency Category";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/assets/js/main.js"></script>
+
+<style>
+    body {
+        background-image: url('https://convertingcolors.com/radial-008374.svg'); /* Set the background image of the page */
+        background-size: cover; /* Cover the entire background */
+        background-repeat: no-repeat; /* Do not repeat the background image */
+    }
+
+
+    .btn {
+        margin-top: 10px;
+        margin-right: 5px;
+        font-size: 16px;
+        padding: 10px 20px;
+        background-color: #008080;
+        color: #fff;
+        border: 2px solid #008080;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
+
+
+        .btn:hover {
+            background-color: #fff;
+            color: #008080;
+        }
+</style>
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header" style="background-color: #008374;">
+            <h2 class="card-title text-white mb-0">Add Agency Category</h2>
+        </div>
+        <div class="card-body">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+            <form asp-action="AddAgencyCategory" method="post" class="needs-validation" novalidate>
+                <div class="form-group">
+                    <label asp-for="MarketingAgencyId" class="control-label" style="color: var(--color-primary);">Marketing Agency</label>
+                    <select asp-for="MarketingAgencyId" class="form-control" asp-items="ViewBag.MarketingAgencyId" style="color: var(--color-primary);"></select>
+                    <span asp-validation-for="MarketingAgencyId" class="text-danger"></span>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label asp-for="CategoryId" class="control-label" style="color: var(--color-primary);">Category</label>
+                    <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId" style="color: var(--color-primary);"></select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+﻿@model List<MarketingHub.Models.Proposal>
+<script src="~/assets/js/main.js"></script>
+
+<style>
+    body {
+        background-image: url('https://convertingcolors.com/radial-008374.svg'); /* Set the background image of the page */
+        background-size: cover; /* Cover the entire background */
+        background-repeat: no-repeat; /* Do not repeat the background image */
+    }
+    /* Custom styles */
+    .page-title {
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .proposal-container {
+        margin-top: 20px;
+    }
+
+    .proposal-table {
+        margin-bottom: 20px;
+    }
+
+    /* Style for table rows */
+    .proposal-row:hover {
+        background-color: #f8f9fa; /* Light gray on hover */
+    }
+
+    /* Style for buttons */
+    .action-btn {
+        margin-right: 5px;
+    }
+</style>
+
+<div class="container-fluid proposal-container">
+    <h2 class="page-title" style="color: var(--color-primary);">Proposals Received</h2>
+
+    @if (Model.Count > 0)
+    {
+        <div class="table-responsive proposal-table">
+            <table class="table table-bordered table-striped">
+                <thead style="background-color: #008374; color: white;">
+                    <tr>
+                        <th>Proposal ID</th>
+                        <th>Customer</th>
+                        <th>Min Budget</th>
+                        <th>Max Budget</th>
+                        <th>Details</th>
+                        <th>Status</th>
+                        <th>Rejection Reason</th>
+                        <th>Acceptance Notes</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var proposal in Model)
+                    {
+                        <tr class="proposal-row">
+                            <td style="background-color:#fff; color:#008374">@proposal.ProposalId</td>
+                            <td style="background-color:#fff; color:#008374">@proposal.Customer.FirstName</td>
+                            <td style="background-color:#fff; color:#008374">@proposal.MinBudget</td>
+                            <td style="background-color:#fff; color:#008374">@proposal.MaxBudget</td>
+                            <td style="background-color:#fff; color:#008374">@proposal.Details</td>
+                            <td style="background-color:#fff; color:#008374">@proposal.Status</td>
+                            <td style="background-color:#fff; color:#008374">@proposal.RejectionReason</td>
+                            <td style="background-color:#fff; color:#008374">@proposal.AcceptanceNotes</td>
+                            <td style="background-color:#fff; color:#008374">
+                                <a asp-action="ProposalDetails" asp-route-id="@proposal.ProposalId" class="btn btn-info btn-sm action-btn">Details</a>
+                                @if (proposal.Status == "Pending")
+                                {
+                                    <form asp-action="AcceptProposal" asp-route-id="@proposal.ProposalId" method="post" style="display: inline;">
+                                        <input type="hidden" asp-for="@proposal.ProposalId" />
+                                        <button type="submit" class="btn btn-success btn-sm action-btn">Accept</button>
+                                    </form>
+
+                                    <form asp-action="RejectProposal" asp-route-id="@proposal.ProposalId" method="post" style="display: inline;">
+                                        <input type="hidden" asp-for="@proposal.ProposalId" />
+                                        <button type="submit" class="btn btn-danger btn-sm action-btn">Reject</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p>No proposals received yet.</p>
+    }
+</div>
+
+@section Scripts {
+    {
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

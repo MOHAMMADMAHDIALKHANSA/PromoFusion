@@ -1,11 +1,9 @@
-﻿using MarketingHub.Models;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
 
 namespace MarketingHub.Models
 {
-    public class MarketingAgency 
+    public class MarketingAgency
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -29,7 +27,7 @@ namespace MarketingHub.Models
         public string Description { get; set; } = "";
 
         [Range(1, 5, ErrorMessage = "Rating must be between 1 and 5")]
-        public int Rating { get; set; }
+        public double? Rating { get; set; }
 
         [Url(ErrorMessage = "Invalid URL format")]
         public string ImageUrl { get; set; } = "";
@@ -39,20 +37,25 @@ namespace MarketingHub.Models
         public string? Twitter { get; set; }
         public string? LinkedIn { get; set; }
 
-
-
-        public ICollection<Customer> Customers { get; set; } = new List<Customer>();
-        public ICollection<MarketingAgencyRegistration> MarketingAgencyRegistrations { get; set; } = new List<MarketingAgencyRegistration>();
-
+        public ICollection<Customer>? Customers { get; set; } = new List<Customer>();
         public ICollection<Post>? Post { get; set; }
-        [Required(ErrorMessage = "Location is required")]
-        public int LocationId { get; set; }
+
+        public int? LocationId { get; set; }
 
         [ForeignKey("LocationId")]
         public Location? Location { get; set; }
-        public string UserId { get; set; } 
+
+        public string UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public ApplicationUser applicationUser { get; set; }
+        public ApplicationUser? applicationUser { get; set; }
+
+        public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+        public ICollection<Feedback>? Feedbacks { get; set; } = new List<Feedback>();
+
+        public ICollection<MarketingAgencyContractType>? MarketingAgencyContractTypes { get; set; } = new List<MarketingAgencyContractType>();
+        public ICollection<MarketingAgencyCategory> MarketingAgencyCategories { get; set; } = new List<MarketingAgencyCategory>();
+        public ICollection<Proposal>? Proposals { get; set; } = new List<Proposal>();
+        public ICollection<Report> Reports { get; set; } = new List<Report>();
     }
 }

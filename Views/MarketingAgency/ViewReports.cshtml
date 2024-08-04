@@ -1,0 +1,64 @@
+﻿@model IEnumerable<MarketingHub.Models.Report>
+
+@{
+    ViewData["Title"] = "View Reports";
+}
+
+<style>
+    .container {
+        background-color: #008374; /* Set background color of the container */
+        padding: 20px; /* Add padding for spacing */
+        border-radius: 10px; /* Optional: Add rounded corners */
+        margin-top: 20px; /* Optional: Adjust margin as needed */
+    }
+
+    .table {
+        background-color: #ffffff; /* Set background color for the table to contrast with the container */
+        border-radius: 5px; /* Optional: Add rounded corners to the table */
+    }
+
+    .btn {
+        background-color: #fd5f00; /* Set button background color */
+        color: #fff; /* Set button text color */
+    }
+
+        .btn:hover {
+            background-color: #ff9000; /* Button color on hover */
+            color: #fff; /* Text color on hover */
+        }
+</style>
+
+<div class="container">
+    <h2 style="color: #ffffff;">Reports Against My Agency</h2>
+
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Report Details</th>
+                <th>Refutation Details</th>
+                <th>Created At</th>
+                <th>Refuted At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var report in Model)
+            {
+                <tr>
+                    <td>@report.Customer.FirstName @report.Customer.LastName</td>
+                    <td>@report.ReportDetails</td>
+                    <td>@report.RefutationDetails</td>
+                    <td>@report.CreatedAt</td>
+                    <td>@report.RefutedAt</td>
+                    <td>
+                        @if (string.IsNullOrEmpty(report.RefutationDetails))
+                        {
+                            <a asp-controller="MarketingAgency" asp-action="RefuteReport" asp-route-reportId="@report.ReportId" class="btn btn-warning">Refute</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

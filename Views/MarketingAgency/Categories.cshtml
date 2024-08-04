@@ -1,0 +1,52 @@
+﻿@model IEnumerable<MarketingHub.Models.MarketingAgencyCategory>
+<script src="~/assets/js/main.js"></script>
+
+<style>
+    body {
+        background-image: url('https://convertingcolors.com/radial-008374.svg'); /* Set the background image of the page */
+        background-size: cover; /* Cover the entire background */
+        background-repeat: no-repeat; /* Do not repeat the background image */
+    }
+</style>
+<div class="container mt-4">
+    <h2 style="color: var(--color-primary);">Categories</h2>
+
+    <!-- Add Category Button -->
+    <a href="@Url.Action("AddCategory")" class="btn btn-primary mb-3" style="background-color: #008374; border-color: #008374;">Add Category</a>
+
+
+    <!-- Error Message -->
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <!-- Category Table -->
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead style="background-color: #008374; color: #fff;">
+                <tr>
+                    <th>Category Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td style="background-color:#fff; color:#008374"> @item.Category.Name</td> <!-- Update to .Name -->
+                        <td style="background-color:#fff; color:#008374">
+                            <a href="@Url.Action("EditCategory", new { oldCategoryId = item.CategoryId })" class="btn btn-sm btn-primary">Edit</a>
+                            <form asp-action="DeleteCategory" method="post" class="d-inline">
+                                <input type="hidden" name="categoryId" value="@item.CategoryId" />
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this category?')">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

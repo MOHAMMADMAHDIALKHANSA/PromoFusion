@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace MarketingHub.Models
 {
@@ -20,17 +21,18 @@ namespace MarketingHub.Models
         [EmailAddress(ErrorMessage = "Invalid email address")]
         public string Email { get; set; } = "";
 
+        public string? pic { get; set; }
+
         [Phone(ErrorMessage = "Invalid phone number")]
         public string PhoneNumber { get; set; } = "";
+        
 
-        public int? MarketingAgencyId { get; set; }
+        [ForeignKey("UserId")]
+        public ApplicationUser applicationUser { get; set; }
 
-        [ForeignKey("MarketingAgencyId")]
-        public MarketingAgency MarketingAgency { get; set; }
-
-        public ICollection<MarketingAgencyRegistration> MarketingAgencyRegistrations { get; set; } = new List<MarketingAgencyRegistration>();
-        public ICollection<Review> Reviews { get; set; } = new List<Review>();
-
-
+        public ICollection<Review>? Reviews { get; set; } = new List<Review>();
+        public ICollection<Appointment>? Appointments { get; set; } = new List<Appointment>();
+        public ICollection<Feedback>? Feedbacks { get; set; } = new List<Feedback>();
+        public ICollection<Proposal> Proposals { get; set; } = new List<Proposal>();
     }
 }

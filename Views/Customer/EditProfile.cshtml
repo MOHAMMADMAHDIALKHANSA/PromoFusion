@@ -1,0 +1,84 @@
+﻿@model MarketingHub.Models.Customer
+
+<style>
+    body {
+        background-image: url('https://convertingcolors.com/radial-008374.svg');
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+        padding: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        margin-top: 10px;
+        font-size: 16px;
+        padding: 10px 20px;
+        background-color: #008080;
+        color: #fff;
+        border: none;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
+
+        .btn:hover {
+            background-color: #fd5f00;
+            color: #fff;
+        }
+</style>
+
+<h1 class="text-center mb-4" style="color: var(--color-primary);">Edit Profile</h1>
+
+<div class="container">
+    <form asp-action="EditProfile" method="post" class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="FirstName" style="color: var(--color-primary);">First Name:</label>
+                        <input type="text" id="FirstName" name="FirstName" class="form-control" value="@Model.FirstName" style="color: var(--color-primary);" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="LastName" style="color: var(--color-primary);">Last Name:</label>
+                        <input type="text" id="LastName" name="LastName" class="form-control" value="@Model.LastName" style="color: var(--color-primary);" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Email" style="color: var(--color-primary);">Email:</label>
+                        <input type="email" id="Email" name="Email" class="form-control" value="@Model.Email" style="color: var(--color-primary);" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="PhoneNumber" style="color: var(--color-primary);">Phone Number:</label>
+                        <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" value="@Model.PhoneNumber" style="color: var(--color-primary);" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="pic" style="color: var(--color-primary);">Picture URL:</label>
+                        <input type="text" id="pic" name="pic" class="form-control" value="@Model.pic" style="color: var(--color-primary);" />
+                        <span asp-validation-for="pic" class="text-danger"></span>
+                    </div>
+
+                    <input asp-for="CustomerId" type="hidden" />
+                    <input asp-for="applicationUser" type="hidden" />
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

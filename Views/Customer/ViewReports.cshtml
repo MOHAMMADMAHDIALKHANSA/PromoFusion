@@ -1,0 +1,70 @@
+﻿@model IEnumerable<MarketingHub.Models.Report>
+
+@{
+    ViewData["Title"] = "View Reports";
+}
+
+<style>
+    body {
+        background-image: url('https://convertingcolors.com/radial-008374.svg'); /* Set the background image of the page */
+        background-size: cover; /* Cover the entire background */
+        background-repeat: no-repeat; /* Do not repeat the background image */
+    }
+
+    .container {
+        background-color: #008374; /* Set background color of the container */
+        padding: 20px; /* Add padding for spacing */
+        border-radius: 10px; /* Optional: Add rounded corners */
+        margin-top: 20px; /* Optional: Adjust margin as needed */
+        color: #ffffff; /* Set text color */
+    }
+
+    .table {
+        background-color: #ffffff; /* Set table background color */
+        border-radius: 10px; /* Optional: Add rounded corners to the table */
+    }
+
+        .table th,
+        .table td {
+            padding: 12px; /* Set padding for table cells */
+        }
+
+        .table th {
+            background-color: #008374; /* Set header background color */
+            color: #ffffff; /* Set header text color */
+            border-top-left-radius: 10px; /* Optional: Adjust corner radius for header */
+            border-top-right-radius: 10px;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2; /* Set alternate row background color */
+        }
+</style>
+
+<div class="container">
+    <h2>My Reports</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Agency</th>
+                <th>Report Details</th>
+                <th>Refutation Details</th>
+                <th>Created At</th>
+                <th>Refuted At</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var report in Model)
+            {
+                <tr>
+                    <td>@report.MarketingAgency.Username</td>
+                    <td>@report.ReportDetails</td>
+                    <td>@report.RefutationDetails</td>
+                    <td>@report.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td>@(report.RefutedAt.HasValue ? report.RefutedAt.Value.ToString("yyyy-MM-dd HH:mm:ss") : "")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

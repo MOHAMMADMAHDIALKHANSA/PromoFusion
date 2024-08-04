@@ -788,7 +788,7 @@ section {
   border-bottom: 1px solid #e4e4e4;
 }
 
-.stats-counter .stats-item .purecounter {
+.stats-counter .stats-item .pure {
   min-width: 90px;
   padding-right: 15px;
 }

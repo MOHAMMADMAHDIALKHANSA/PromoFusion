@@ -1,0 +1,57 @@
+﻿@model MarketingHub.Models.MarketingAgencyContractType
+
+@{
+    ViewData["Title"] = "Edit Agency Contract Type";
+}
+<script src="~/assets/js/main.js"></script>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header" style="background-color: #008374;">
+            <h2 class="card-title text-white mb-0">Edit Agency Contract Type</h2>
+        </div>
+        <div class="card-body">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+            <form asp-action="EditAgencyContractType" method="post" class="needs-validation" novalidate>
+                <input type="hidden" asp-for="MarketingAgencyId" />
+                <input type="hidden" name="oldContractTypeId" value="@Model.ContractTypeId" /> <!-- Hidden field for the old contract type id -->
+                <div class="form-group">
+                    <label asp-for="ContractTypeId" class="control-label">Contract Type</label>
+                    <select asp-for="ContractTypeId" class="form-control">
+                        @foreach (var contractType in ViewBag.ContractTypes)
+                        {
+                            <option value="@contractType.Value">@contractType.Text</option>
+                        }
+                    </select>
+                    <span asp-validation-for="ContractTypeId" class="text-danger"></span>
+                </div>
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary" style="background-color: #008374; border-color: #008374;">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,44 @@
+﻿@model IEnumerable<MarketingHub.Models.Payment>
+<div class="container mt-4">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr style="background-color: #008374; color: white;">
+                    <th>Customer</th>
+                    <th>Agency</th>
+                    <th>Amount</th>
+                    <th>Payment Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var payment in Model)
+                {
+                    <tr>
+                        <td>@payment.Customer.FirstName @payment.Customer.LastName</td>
+                        <td>@payment.MarketingAgency.Username</td>
+                        <td>@payment.Amount</td>
+                        <td>@payment.PaymentDate.ToShortDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .container {
+        background-color: #008374;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .table th {
+        background-color: #008374;
+        color: white;
+    }
+
+    .btn-primary {
+        background-color: #008374;
+        border-color: #008374;
+    }
+</style>

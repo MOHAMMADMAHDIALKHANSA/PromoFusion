@@ -44,6 +44,22 @@
         .search-button:hover {
             background-color: #005353;
         }
+
+    .btn {
+        margin-top: 10px;
+        font-size: 16px;
+        padding: 10px 20px;
+        background-color: #008080;
+        color: #fff;
+        border: none;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
+
+        .btn:hover {
+            background-color: #fd5f00;
+            color: #fff;
+        }
 </style>
 
 <div class="container mt-4">
@@ -61,6 +77,8 @@
                     <button type="submit" class="search-button">Search</button>
                 </div>
             </form>
+            <a asp-controller="Administrator" asp-action="AddAdmin" class="btn btn-primary" style="display: inline-block;">Add New Admin</a>
+
         </div>
     </div>
 </div>
@@ -84,6 +102,9 @@
                             <a href="https://www.instagram.com/"><i class="bi bi-instagram"></i></a>
                             <a href="https://www.linkedin.com/"><i class="bi bi-linkedin"></i></a>
                         </div>
+                        <a class="btn btn-primary" asp-controller="Administrator" asp-action="DeleteAdmin" asp-route-id="@admin.AdministratorId">Delete</a>
+                        <a class="btn btn-primary" asp-controller="Administrator" asp-action="EditAdmin" asp-route-id="@admin.AdministratorId">Edit</a>
+
                     </div>
                 </div>
             }
@@ -105,3 +126,4 @@
         });
     });
 </script>
+

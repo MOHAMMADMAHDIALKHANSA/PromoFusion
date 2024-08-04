@@ -1,0 +1,74 @@
+﻿@model IEnumerable<MarketingHub.Models.Proposal>
+
+@{
+    ViewData["Title"] = "My Rejected Proposals";
+}
+
+<style>
+    /* Custom styles */
+    body {
+        background-image: url('https://convertingcolors.com/radial-008374.svg'); /* Set the background image of the page */
+        background-size: cover; /* Cover the entire background */
+        background-repeat: no-repeat; /* Do not repeat the background image */
+    }
+
+    table {
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #dee2e6;
+    }
+
+    th,
+    td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #dee2e6; /* Light border color */
+    }
+
+    th {
+        background-color: #008374; /* Dark turquoise */
+        color: #fff; /* White text */
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 131, 116, 0.1); /* Light turquoise */
+    }
+
+    .table-striped tbody tr:nth-of-type(even) {
+        background-color: #fff; /* White */
+    }
+</style>
+
+<div class="container">
+    <h2 style="color: var(--color-primary);">My Rejected Proposals</h2>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th style="background-color: #008374; color: #fff;">Marketing Agency</th>
+                    <th style="background-color: #008374; color: #fff;">Min Budget ($)</th>
+                    <th style="background-color: #008374; color: #fff;">Max Budget ($)</th>
+                    <th style="background-color: #008374; color: #fff;">Details</th>
+                    <th style="background-color: #008374; color: #fff;">Status</th>
+                    <th style="background-color: #008374; color: #fff;">Rejection Reason</th>
+                    <th style="background-color: #008374; color: #fff;">Acceptance Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var proposal in Model.Where(p => p.Status == "Rejected"))
+                {
+                    <tr>
+                        <td style="background-color:#fff; color:#008374;">@proposal.MarketingAgency?.Username</td>
+                        <td style="background-color:#fff; color:#008374;">@proposal.MinBudget $</td>
+                        <td style="background-color: #fff; color: #008374;">@proposal.MaxBudget $</td>
+                        <td style="background-color: #fff; color: #008374;">@proposal.Details</td>
+                        <td style="background-color: #fff; color: #008374;">@proposal.Status</td>
+                        <td style="background-color: #fff; color: #008374;">@proposal.RejectionReason</td>
+                        <td style="background-color: #fff; color: #008374;">@proposal.AcceptanceNotes</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

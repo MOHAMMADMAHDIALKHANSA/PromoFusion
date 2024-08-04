@@ -1,0 +1,73 @@
+﻿@model IEnumerable<MarketingHub.Models.Appointment>
+<script src="~/assets/js/main.js"></script>
+
+<style>
+    body {
+        background-image: url('https://convertingcolors.com/radial-008374.svg'); /* Set the background image of the page */
+        background-size: cover; /* Cover the entire background */
+        background-repeat: no-repeat; /* Do not repeat the background image */
+    }
+
+    /* Custom styles */
+    .table-container {
+        margin-top: 20px;
+    }
+
+    /* Style for table rows */
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f8f9fa; /* Light gray background for odd rows */
+    }
+</style>
+
+<div class="container">
+    <div class="table-container">
+        <h2 style="color: var(--color-primary);">Appointment Requests</h2>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead style="background-color: #008374; color: white;">
+                    <tr>
+                        <th>Customer</th>
+                        <th>Requested Start Date</th>
+                        <th>Requested End Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var request in Model)
+                    {
+                        <tr>
+                            <td style="background-color:#fff; color:#008374">@request.Customer.FirstName @request.Customer.LastName</td>
+                            <!-- Display StartDateTime as the requested start date -->
+                            <td style="background-color:#fff; color:#008374">@request.StartDateTime.ToString("g")</td>
+                            <!-- Display EndDateTime as the requested end date -->
+                            <td style="background-color:#fff; color:#008374">@request.EndDateTime.ToString("g")</td>
+                            <td style="background-color:#fff; color:#008374">@request.Status</td>
+                            <td style="background-color:#fff; color:#008374">
+                                @if (request.Status == "Pending")
+                                {
+                                    <!-- Approve form -->
+                                    <form asp-controller="MarketingAgency" asp-action="Approve" method="post" style="display:inline;">
+                                        <input type="hidden" name="appointmentId" value="@request.AppointmentId" style="background-color:#fff; color:#008374" />
+                                        <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                    </form>
+                                    <!-- Reject form -->
+                                    <form asp-controller="MarketingAgency" asp-action="Reject" method="post" style="display:inline;">
+                                        <input type="hidden" name="appointmentId" value="@request.AppointmentId" style="background-color:#fff; color:#008374" />
+                                        <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                    </form>
+                                }
+                                <!-- Show a message if the appointment is approved or rejected -->
+                                @if (request.Status != "Pending")
+                                {
+                                    <span style="background-color:#fff; color:#008374">@request.Status</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

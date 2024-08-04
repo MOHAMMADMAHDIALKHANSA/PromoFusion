@@ -1,0 +1,53 @@
+﻿@model IEnumerable<MarketingHub.Models.Appointment>
+
+@{
+    ViewData["Title"] = "My Appointment Requests";
+}
+<script src="~/assets/js/main.js"></script>
+
+<style>
+    body {
+        background-image: url('https://convertingcolors.com/radial-008374.svg'); /* Set the background image of the page */
+        background-size: cover; /* Cover the entire background */
+        background-repeat: no-repeat; /* Do not repeat the background image */
+    }
+
+</style>
+
+<div class="container">
+    <h2 style="color: var(--color-primary);">My Appointment Requests</h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead style="background-color: #008374; color: white;">
+                <tr>
+                    <th>Marketing Agency</th>
+                    <th>Requested Start Time</th>
+                    <th>Requested End Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var appointment in Model)
+                {
+                    <tr>
+                        <td style="background-color:#fff; color:#008374">@appointment.MarketingAgency.Username</td>
+                        <td style="background-color:#fff; color:#008374">@appointment.StartDateTime.ToString("g")</td>
+                        <td style="background-color:#fff; color:#008374">@appointment.EndDateTime.ToString("g")</td>
+                        <td style="background-color:#fff; color:#008374">@appointment.Status</td>
+                        <td style="background-color:#fff; color:#008374">
+                            @if (appointment.Status == "Pending")
+                            {
+                                <form asp-controller="Customer" asp-action="DeclineRequest" method="post" style="display:inline;">
+                                    <input type="hidden" name="appointmentId" value="@appointment.AppointmentId" />
+                                    <button type="submit" class="btn btn-danger">Cancel</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

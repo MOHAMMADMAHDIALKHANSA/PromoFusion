@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Marketing Agencies";
 }
+<script src="~/assets/js/main.js"></script>
 
 <style>
 
@@ -16,7 +17,7 @@
         height: 350px; /* Set a fixed height for the card */
         transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow transition */
         max-width: 300px; /* Decreased the width of the cards */
-        overflow: hidden;/* Hide any overflow */
+        overflow: hidden; /* Hide any overflow */
         border-color: #008080;
     }
 
@@ -63,7 +64,7 @@
 
     .btn {
         margin-top: 10px;
-        margin-right: 5px; 
+        margin-right: 5px;
         font-size: 16px;
         padding: 10px 20px;
         background-color: #008080;
@@ -71,11 +72,11 @@
         border: 2px solid #008080;
         border-radius: 25px;
         transition: all 0.3s ease;
-        display: none; 
+        display: none;
     }
 
     .custom-card:hover .btn {
-        display: inline-block; 
+        display: inline-block;
     }
 
     .btn:hover {
@@ -83,15 +84,18 @@
         color: #008080;
     }
 
-      .buttons {
+    .buttons {
         display: flex;
         justify-content: space-around;
         margin-top: 10px;
+        top: 75%; /* Adjust as needed to match the info position */
+        left: 75%;
     }
+
     .search-form {
         display: flex;
         align-items: center;
-        margin-bottom: 20px; 
+        margin-bottom: 20px;
     }
 
     .search-input {
@@ -99,7 +103,7 @@
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
-        margin-right: 10px; 
+        margin-right: 10px;
         font-size: 16px;
     }
 
@@ -116,7 +120,25 @@
         .search-button:hover {
             background-color: #005353;
         }
-   
+
+    .card-link {
+        color: inherit;
+        text-decoration: none;
+    }
+
+        .card-link .card {
+            cursor: pointer;
+        }
+
+            .card-link .card .buttons a,
+            .card-link .card .buttons button {
+                pointer-events: auto;
+            }
+
+    .agency-card .agency-info,
+    .agency-card .buttons {
+        transition: all 0.3s ease;
+    }
 </style>
 
 
@@ -139,34 +161,72 @@
 </div>
 
 
-
 <div class="container">
     <div class="row">
         @foreach (var agency in Model)
         {
             <div class="col-md-4">
-                <div class="card custom-card mb-4">
+                                <a asp-controller="Administrator" asp-action="Details" asp-route-id="@agency.MarketingAgencyId" class="card-link">
+
+                <div class="card custom-card mb-4 agency-card">
                     <div class="rounded-img-container">
                         <div class="center-top">
                             <img src="@agency.ImageUrl" class="rounded-img" alt="Agency Image">
                         </div>
                     </div>
                     <div class="card-body text-center">
-                        <h5 class="card-title text-a">@agency.Username</h5>
-                        <div class="rating">
-                            @for (var i = 0; i < agency.Rating; i++)
-                            {
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            }
+                        <h5 class="card-title">@agency.Username</h5>
+                        <div class="agency-info">
+                            <p style="color: #fd5f00;">
+                                @foreach (var category in agency.MarketingAgencyCategories)
+                                {
+                                    @category.Category.Name
+                                    @if (category != agency.MarketingAgencyCategories.Last())
+                                    {
+                                        <text>, </text>
+                                    }
+                                }
+                            </p>
+                            <p style="color: #fd5f00;">
+                                @foreach (var contractType in agency.MarketingAgencyContractTypes)
+                                {
+                                    @contractType.ContractType.Name
+                                    @if (contractType != agency.MarketingAgencyContractTypes.Last())
+                                    {
+                                        <text>, </text>
+                                    }
+                                }
+                            </p>
                         </div>
-                        <div class="buttons">
+                        <div class="buttons d-none">
                             <a asp-controller="Administrator" asp-action="Details" asp-route-id="@agency.MarketingAgencyId" class="btn btn-primary">View</a>
                             <a class="btn btn-primary" asp-controller="Administrator" asp-action="EditAgency" asp-route-id="@agency.MarketingAgencyId">Edit</a>
                             <a class="btn btn-primary" asp-controller="Administrator" asp-action="Delete" asp-route-id="@agency.MarketingAgencyId">Delete</a>
                         </div>
                     </div>
                 </div>
+                </a>
             </div>
         }
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybU5loB8bRZARlpiq31K5go+/V1pGFlJRm8rRXbggtv+fOonA" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js" integrity="sha384-cuDk7RXAhKs8gVfFevm64JtA9f3lWx7Eq03U8i9E8Y4nphe+1xgIqGtt/45b8g2T" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var cards = document.querySelectorAll('.agency-card');
+            cards.forEach(function (card) {
+                card.addEventListener('mouseover', function () {
+                    card.querySelector('.agency-info').classList.add('d-none');
+                    card.querySelector('.buttons').classList.remove('d-none');
+                });
+                card.addEventListener('mouseout', function () {
+                    card.querySelector('.agency-info').classList.remove('d-none');
+                    card.querySelector('.buttons').classList.add('d-none');
+                });
+            });
+        });
+    </script>
+}

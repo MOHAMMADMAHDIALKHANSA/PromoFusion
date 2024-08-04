@@ -1,0 +1,33 @@
+﻿@model IEnumerable<MarketingHub.Models.Report>
+
+<div class="container" style="background-color: #008374; padding: 20px; margin: 20px auto; border-radius: 5px;">
+    <h2 class="text-white">Reports</h2>
+
+    <table class="table table-responsive table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Report ID</th>
+                <th>Customer</th>
+                <th>Agency</th>
+                <th>Details</th>
+                <th>Created At</th>
+                <th>Refutation</th>
+                <th>Refuted At</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var report in Model)
+            {
+                <tr class="bg-light">
+                    <td>@report.ReportId</td>
+                    <td>@report.Customer?.FirstName@report.Customer?.LastName</td>
+                    <td>@report.MarketingAgency?.Username</td>
+                    <td>@report.ReportDetails</td>
+                    <td>@report.CreatedAt.ToString("g")</td>
+                    <td>@(report.RefutationDetails ?? "N/A")</td>
+                    <td>@(report.RefutedAt?.ToString("g") ?? "N/A")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

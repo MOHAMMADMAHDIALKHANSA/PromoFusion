@@ -1,0 +1,66 @@
+﻿@model MarketingHub.Models.Report
+
+@{
+    ViewData["Title"] = "Create Report";
+}
+
+<style>
+    body {
+        background-image: url('https://convertingcolors.com/radial-008374.svg'); /* Set the background image of the page */
+        background-size: cover; /* Cover the entire background */
+        background-repeat: no-repeat; /* Do not repeat the background image */
+    }
+
+    .container {
+        background-color: #008374; /* Set background color of the container */
+        padding: 20px; /* Add padding for spacing */
+        border-radius: 10px; /* Optional: Add rounded corners */
+        margin-top: 20px; /* Optional: Adjust margin as needed */
+        color: #ffffff; /* Set text color */
+    }
+
+    .form-group {
+        margin-bottom: 20px; /* Add margin between form groups */
+    }
+
+    .form-control {
+        border-radius: 5px; /* Set border radius for form inputs */
+    }
+
+    .btn {
+        font-size: 16px; /* Set button font size */
+        padding: 10px 20px; /* Set button padding */
+        background-color: #008080; /* Set button background color */
+        color: #fff; /* Set button text color */
+        border: none; /* Remove button border */
+        border-radius: 25px; /* Set button border radius */
+        transition: all 0.3s ease; /* Add transition for hover effect */
+    }
+
+        .btn:hover {
+            background-color: #fd5f00; /* Change button background color on hover */
+        }
+</style>
+
+<div class="container">
+    <h2>Create Report</h2>
+
+    <form asp-action="CreateReport" method="post">
+
+        <!-- Hidden Field for MarketingAgencyId -->
+        <input type="hidden" asp-for="MarketingAgencyId" />
+
+        <!-- Form Group for Report Details -->
+        <div class="form-group">
+            <label asp-for="ReportDetails" class="control-label">Report Details:</label>
+            <textarea asp-for="ReportDetails" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="ReportDetails" class="text-danger"></span>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-group">
+            <input type="submit" value="Submit" class="btn btn-primary" />
+        </div>
+
+    </form>
+</div>

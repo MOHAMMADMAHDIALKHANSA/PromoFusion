@@ -1,0 +1,41 @@
+﻿@model IEnumerable<MarketingHub.Models.MarketingAgencyContractType>
+<script src="~/assets/js/main.js"></script>
+
+<style>
+    body {
+        background-image: url('https://convertingcolors.com/radial-008374.svg'); /* Set the background image of the page */
+        background-size: cover; /* Cover the entire background */
+        background-repeat: no-repeat; /* Do not repeat the background image */
+    }
+</style>
+<div class="container">
+    <h2 style="color: var(--color-primary);">Contract Types</h2>
+
+    <a href="@Url.Action("AddContractType")" class="btn btn-primary" style="background-color: #008374; border-color: #008374; margin-bottom: 10px;">Add Contract Type</a>
+    <div class="table-responsive">
+
+    <table class="table table-striped">
+            <thead style="background-color: #008374; color: #fff;">
+            <tr>
+                <th>Contract Type Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="background-color:#fff; color:#008374">@item.ContractType.Name</td>
+                    <td style="background-color:#fff; color:#008374">
+                        <a href="@Url.Action("EditContractType", new { oldContractTypeId = item.ContractTypeId })" class="btn btn-primary" style="background-color: #008374; border-color: #008374;">Edit</a>
+                        <form asp-action="DeleteContractType" method="post" style="display:inline">
+                            <input type="hidden" name="contractTypeId" value="@item.ContractTypeId" />
+                            <button type="submit" class="btn btn-danger" style="background-color: #dc3545; border-color: #dc3545;">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+</div>

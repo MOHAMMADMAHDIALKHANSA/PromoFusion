@@ -16,6 +16,9 @@ namespace MarketingHub.Models
         [Required(ErrorMessage = "Content is required")]
         public string Content { get; set; }
 
+        public string picContent { get; set; }
+
+
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public int MarketingAgencyId { get; set; }

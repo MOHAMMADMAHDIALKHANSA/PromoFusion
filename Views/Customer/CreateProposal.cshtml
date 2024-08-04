@@ -1,0 +1,115 @@
+﻿@model MarketingHub.Models.Proposal
+
+@{
+    ViewData["Title"] = "Create Proposal";
+    Layout = "_Layout"; // Assuming you have a layout file named _Layout.cshtml
+}
+<script src="~/assets/js/main.js"></script>
+
+<style>
+    /* Custom styles */
+    body {
+        background-image: url('https://convertingcolors.com/radial-008374.svg'); /* Set the background image of the page */
+        background-size: cover; /* Cover the entire background */
+        background-repeat: no-repeat; /* Do not repeat the background image */
+        font-family: Arial, sans-serif; /* Default font */
+    }
+
+    .proposal-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: fff; /* White background */
+        border-radius: 8px;
+        box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5); /* add shadow on hover */
+    }
+
+    .proposal-title {
+        color: #007bff; /* Primary blue */
+        font-size: 24px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        color: #555;
+        font-weight: bold;
+    }
+
+    .form-control {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .btn-submit {
+        background-color: var(--color-primary); /* Primary blue */
+        border: none;
+        border-radius: 25px;
+        padding: 12px 30px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #fff; /* White text */
+        width: 100%;
+        transition: background-color 0.3s ease-in-out;
+        border: 2px solid #008080;
+    }
+
+        .btn-submit:hover {
+            background-color: #fff;
+            color: var(--color-primary);
+        }
+</style>
+
+<div class="proposal-container">
+    <h2 class="proposal-title" style="color: var(--color-primary)">Create Proposal</h2>
+
+    <form asp-action="CreateProposal" method="post">
+        <div class="form-group">
+            <label asp-for="MinBudget" class="form-label" style="color: var(--color-primary)">Minimum Budget ($):</label>
+            <input asp-for="MinBudget" class="form-control" style="color: var(--color-primary)" />
+            <span asp-validation-for="MinBudget" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="MaxBudget" class="form-label" style="color: var(--color-primary)">Maximum Budget ($):</label>
+            <input asp-for="MaxBudget" class="form-control" style="color: var(--color-primary)" />
+            <span asp-validation-for="MaxBudget" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Details" class="form-label" style="color: var(--color-primary)">Details:</label>
+            <textarea asp-for="Details" class="form-control" rows="5" style="color: var(--color-primary)"></textarea>
+            <span asp-validation-for="Details" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CategoryId" class="form-label" style="color: var(--color-primary)">Category:</label>
+            <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryOptions" style="color: var(--color-primary)"></select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ContractTypeId" class="form-label" style="color: var(--color-primary)">Contract Type:</label>
+            <select asp-for="ContractTypeId" class="form-control" asp-items="ViewBag.ContractTypeOptions" style="color: var(--color-primary)"></select>
+            <span asp-validation-for="ContractTypeId" class="text-danger"></span>
+        </div>
+
+
+        <input type="hidden" asp-for="MarketingAgencyId" />
+        <input type="hidden" asp-for="CustomerId" />
+
+        <button type="submit" class="btn btn-submit">Submit Proposal</button>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

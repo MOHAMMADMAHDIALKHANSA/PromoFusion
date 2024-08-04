@@ -1,0 +1,91 @@
+﻿@model IEnumerable<MarketingHub.Models.MarketingAgencyContractType>
+
+@{
+    ViewData["Title"] = "Manage Agency Contract Types";
+}
+<script src="~/assets/js/main.js"></script>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+<style>
+    body {
+        background-image: url('https://convertingcolors.com/radial-008374.svg'); /* Set the background image of the page */
+        background-size: cover; /* Cover the entire background */
+        background-repeat: no-repeat; /* Do not repeat the background image */
+    }
+
+    .btn {
+        margin-top: 10px;
+        margin-right: 5px;
+        font-size: 16px;
+        padding: 10px 20px;
+        background-color: #008080;
+        color: #fff;
+        border: 2px solid #008080;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
+
+
+        .btn:hover {
+            background-color: #fff;
+            color: #008080;
+        }
+</style>
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header" style="background-color: #008374; color: white;">
+            <h2 class="card-title mb-0">@ViewData["Title"]</h2>
+        </div>
+        <div class="card-body">
+            <p>
+                <a asp-action="AddAgencyContractType" class="btn">Add New Agency Contract Type</a>
+            </p>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                Username
+                            </th>
+                            <th>
+                                Contract Type Name
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MarketingAgency.Username)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ContractType.Name)
+                                </td>
+                                <td>
+                                    <a asp-action="EditAgencyContractType" asp-route-marketingAgencyId="@item.MarketingAgencyId" asp-route-contractTypeId="@item.ContractTypeId" class="btn">Edit</a>
+                                   
+ |
+                                    <form asp-action="DeleteAgencyContractType" method="post" style="display:inline">
+                                        <input type="hidden" name="marketingAgencyId" value="@item.MarketingAgencyId" />
+                                        <input type="hidden" name="contractTypeId" value="@item.ContractTypeId" />
+                                        <button type="submit" class="btn">Delete</button>
+                                    </form>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,26 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            margin-bottom: 100px; /* Adjust this value to match your footer height */
+        }
+
+        .footer {
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            background-color: #f8f9fa; /* Adjust as needed */
+            padding: 20px 0; /* Adjust padding as needed */
+            color: #333; /* Adjust text color as needed */
+        }
+    </style>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PromoFusion</title>
@@ -34,7 +54,9 @@
 
     <!-- Template Main CSS File -->
     <link href="~/assets/css/main.css" rel="stylesheet"/>
+    <script src="~/assets/js/main.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
 
@@ -47,7 +69,7 @@
     <section id="topbar" class="topbar d-flex align-items-center">
         <div class="container d-flex justify-content-center justify-content-md-between">
             <div class="contact-info d-flex align-items-center">
-                <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:contact@example.com">PromoFusion@gmail.com</a></i>
+                <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:contact@example.com">PromoFusion94@gmail.com</a></i>
                 <i class="bi bi-phone d-flex align-items-center ms-4"><span>+961 457962</span></i>
             </div>
             <div class="social-links d-none d-md-flex align-items-center">
@@ -67,57 +89,160 @@
                 <!-- <img src="assets/img/logo.png" alt=""> -->
                 <h1><span style="color: #fd5f00;">Promo</span>Fusion</h1>
             </a>
-              
+
 
             <nav id="navbar" class="navbar">
+
                 <ul>
                     <li>
                         <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
-                    
+
                     @if (User.IsInRole(MarketingHub.Utility.SD.Role_Cust))
                     {
-                        <li >
-                            <a class="nav-link text-light" asp-area="" asp-controller="Customer" asp-action="Index">Agencies</a>
-                        </li>
-                        <li >
-                            <a class="nav-link text-light" asp-area="" asp-controller="Customer" asp-action="SubmitReview">Submit a Review for the website</a>
+                        <!-- Customer Links -->
+                        <li class="dropdown">
+                            <a class="nav-link text-light dropdown-toggle" href="#" id="customerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Customer Panel
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="customerDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="Index">Agencies</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="MyRequests">My Requests</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="ViewProposals">My Proposals</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="ViewRejectedProposals">My Rejected Proposals</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="Profile">My Profile</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="ViewReports">My Reports</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="Payments">My Payments</a>
+                                </li>
+                            </ul>
                         </li>
                     }
-                    @if (User.IsInRole(MarketingHub.Utility.SD.Role_Agency)){
+                    @if (User.IsInRole(MarketingHub.Utility.SD.Role_Agency))
+                    {
+                        <!-- Agency Panel -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-light" href="#" id="agencyDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Agency Panel
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="agencyDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="MarketingAgency" asp-action="Index">Marketing Agencies</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="MarketingAgency" asp-action="Requests">Pending Requests</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="MarketingAgency" asp-action="ProposalsReceived">Pending Proposals</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="MarketingAgency" asp-action="Profile">My Profile</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="MarketingAgency" asp-action="ViewReports">View reports</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="MarketingAgency" asp-action="Payments">View Payments</a>
+                                </li>
+                            </ul>
+                        </li>
 
-                    <li >
-                            <a class="nav-link text-light" asp-area="" asp-controller="MarketingAgency" asp-action="Index">MarketingAgency</a>
-                    </li>
+                        <!-- Manage Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-light" href="#" id="manageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Manage
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="manageDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="MarketingAgency" asp-action="Categories">Manage Categories</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="MarketingAgency" asp-action="ContractTypes">Manage Contract Types</a>
+                                </li>
+                            </ul>
+                        </li>
                     }
+
+                    
+
                     @if (User.IsInRole(MarketingHub.Utility.SD.Role_Admin))
                     {
-                        <li >
-                            <a class="nav-link text-light" asp-area="" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                        <li class="dropdown">
+                            <a class="nav-link text-light dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Administrator
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Administrator" asp-action="Index">Agencies</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Administrator" asp-action="displayAdmin">Administrators</a>
+                                </li>
+                                <!-- Management Panel -->
+                               
+                            </ul>
                         </li>
-                        <li >
-                            <a class="nav-link text-light" asp-area="" asp-controller="Administrator" asp-action="Index">Agencies</a>
+                        <li class="dropdown">
+                            <a class="nav-link text-light dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Management Panel
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="managementDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Administrator" asp-action="ManageAgencyCategories">Manage Agency Category</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Administrator" asp-action="ManageAgencyContractTypes">Manage Agency Contract Type</a>
+                                </li>
+                            </ul>
                         </li>
-                        <li >
-                            <a class="nav-link text-light" asp-area="" asp-controller="Administrator" asp-action="displayAdmin">Administrators</a>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-controller="Administrator" asp-action="Reports">View Reports</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-controller="Administrator" asp-action="Payments">View Payments</a>
                         </li>
                     }
-                    <li>
-                        <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="About">AboutUs</a>
+                    <!-- Other Links -->
+                    <li class="dropdown">
+                        <a class="nav-link text-light dropdown-toggle" href="#" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            More
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="moreDropdown">
+                            <li>
+                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="About">About Us</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="ContactUs">Contact Us</a>
+                            </li>
+                        </ul>
                     </li>
-                    <li >
-                        <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    <li class="dropdown">
+                        <a class="nav-link text-light dropdown-toggle" href="#" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Connect With Us
+                        </a>
+                        <partial name="_LoginPartial">
                     </li>
-                        <li >
-                        <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="ContactUs">ContactUs</a>
-                        </li>                      
-                    <li>
-                            <partial name="_LoginPartial"> 
-
-                    </li>                                    
+                    
                 </ul>
-
-                </nav>
+            </nav>
     </div>
             <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
             <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
@@ -140,7 +265,9 @@
                     </a>
                     <p>
                        Beirut, 1107<br>
-                        Lebanon <br><br>
+                        Lebanon <br>
+                        Phone: +961 457962<br>
+                        Email: PromoFusion94@gmail.com<br>
                     <div class="social-links d-flex mt-4">
                         <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
                         <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -159,20 +286,24 @@
                 </div>
 
                 <div class="col-lg-2 col-6 footer-links">
-                    <h4>Our Services</h4>
+                    <h4>Contract Type Services</h4>
                     <ul>
-                        <li><a> Food ADs</a></li>
-                        <li><a>Product ADs</a></li>
+                        <li><a>Full Implementaion</a></li>
+                        <li><a>Material</a></li>
+                        <li><a>Strategy</a></li>
+
                     </ul>
                 </div>
+                <div class="col-lg-2 col-6 footer-links">
+                    <h4> Provided Category Types</h4>
+                    <ul>
+                        <li><a>Digital Media</a></li>
+                        <li><a>Video Promotion</a></li>
+                        <li><a>Image</a></li>
+                        <li><a>Audio</a></li>
 
-                <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
-                    <h4>Contact Us</h4>
-                           
-                        <strong>Phone:</strong> +961 457962<br>
-                        <strong>Email:</strong> PromoFusion@gmail.com<br>
-                    </p>
 
+                    </ul>
                 </div>
 
             </div>
@@ -207,5 +338,4 @@
 </body>
 
 </html>
-
 

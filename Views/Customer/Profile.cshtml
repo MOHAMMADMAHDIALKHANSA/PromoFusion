@@ -1,0 +1,528 @@
+﻿   @model MarketingHub.Models.Customer
+
+@{
+    var appointmentRequests = ViewBag.AppointmentRequests as List<MarketingHub.Models.Appointment>;
+    var proposals = ViewBag.Proposals as List<MarketingHub.Models.Proposal>;
+
+    ViewData["Title"] = "Customer Profile";
+}
+<script src="~/assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<head>
+    <style>
+        body {
+            background-image: url('https://convertingcolors.com/radial-008374.svg');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .profile-card img {
+            max-width: 150px;
+            border-radius: 50%;
+        }
+
+        .profile-card h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2c384e;
+            margin-top: 15px;
+        }
+
+        .profile-card h3 {
+            font-size: 18px;
+        }
+
+        .social-links a {
+            font-size: 24px;
+            display: inline-block;
+            color: #008080;
+            margin-right: 10px;
+            transition: 0.3s;
+        }
+
+            .social-links a:hover {
+                color: #fd5f00;
+            }
+
+        .profile-overview .label {
+            font-weight: 600;
+            color: #008080;
+        }
+
+        .btn {
+            margin-top: 10px;
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: #008080;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+            .btn:hover {
+                background-color: #fd5f00;
+                color: #fff;
+            }
+
+        .feedback-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            margin: 10px;
+            width: 100%; /* Full width by default */
+        }
+
+            .feedback-card .card-title {
+                color: #008080;
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+            .feedback-card .card-text {
+                color: #555;
+                margin-bottom: 5px;
+                font-size: 14px;
+            }
+
+            .feedback-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+
+        .rating-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .rating-label {
+            margin-right: 10px;
+        }
+
+        .star-rating {
+            display: flex;
+            align-items: center;
+            font-size: 0;
+            direction: rtl;
+        }
+
+            .star-rating input[type="radio"] {
+                display: none;
+            }
+
+            .star-rating label {
+                font-size: 30px;
+                color: #ccc;
+                cursor: pointer;
+                display: inline-block;
+                margin-left: 5px;
+            }
+
+                .star-rating label:hover,
+                .star-rating label:hover ~ label {
+                    color: #fd5f00;
+                }
+
+            .star-rating input[type="radio"]:checked ~ label {
+                color: #fd5f00;
+            }
+
+                .star-rating input[type="radio"]:checked ~ label:hover,
+                .star-rating input[type="radio"]:checked ~ label:hover ~ label {
+                    color: #fd5f00;
+                }
+
+        .profile-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-card-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .profile-details {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .appointment-table th, .appointment-table td {
+            background-color: #fff;
+            color: #008374;
+        }
+
+        .appointment-table th {
+            background-color: #008374;
+            color: white;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 131, 116, 0.1); /* Light turquoise */
+        }
+
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: #fff; /* White */
+        }
+
+        .proposal-table th, .proposal-table td {
+            background-color: #fff;
+            color: #008374;
+        }
+
+        .proposal-table th {
+            background-color: #008374;
+            color: white;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 131, 116, 0.1); /* Light turquoise */
+        }
+
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: #fff; /* White */
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+            .card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0px 0px 20px 0px var(--color-primary);
+            }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            background-color: #6c757d; /* Change to your preferred color */
+            color: white;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            padding: 10px 20px;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+
+<div class="container mt-4">
+    <section class="section profile profile-container">
+        <div class="profile-card-wrapper">
+            <div class="col-xl-4">
+                <div class="card">
+                    <div class="card-body profile-card pt-4 text-center">
+                        <img src="@Model.pic" alt="Profile">
+                        <div>
+                            <a asp-action="EditProfile" class="btn">Edit Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-details col-xl-8">
+            <div class="card">
+                <div class="card-body pt-3">
+                    <ul class="nav nav-tabs nav-tabs-bordered">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#profile-overview" style="color: #fd5f00;"><strong>Overview</strong></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#profile-feedbacks" style="color: #fd5f00;"><strong>Feedbacks</strong></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#profile-appointments" style="color: #fd5f00;"><strong>Appointments</strong></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#profile-proposals" style="color: #fd5f00;"><strong>Proposals</strong></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#profile-stats" style="color: #fd5f00;"><strong>Statistics</strong></a>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content pt-2">
+                        <div class="tab-pane fade show active" id="profile-overview">
+                            <h5 class="card-title" style="color: var(--color-primary)"><strong>Profile</strong></h5>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label" style="color: var(--color-primary)"><strong>User Name</strong></div>
+                                <div class="col-lg-9 col-md-8" style="color: var(--color-primary)">@Model.FirstName @Model.LastName</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label" style="color: var(--color-primary)"><strong>Phone</strong></div>
+                                <div class="col-lg-9 col-md-8" style="color: var(--color-primary)">@Model.PhoneNumber</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label" style="color: var(--color-primary)"><strong>Email</strong></div>
+                                <div class="col-lg-9 col-md-8" style="color: var(--color-primary)">@Model.Email</div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="profile-feedbacks">
+                            <h5 class="card-title" style="color: var(--color-primary)"><strong>Feedbacks</strong></h5>
+                            @if (ViewBag.Feedbacks != null)
+                            {
+                                <div class="row">
+                                    @foreach (var feedback in ViewBag.Feedbacks)
+                                    {
+                                        <div class="col-md-6 col-lg-4">
+                                            <div class="feedback-card mb-3">
+                                                <div class="card-title">@feedback.MarketingAgency.Username</div>
+                                                <div class="card-text">
+                                                    <strong>Rating:</strong>
+                                                    <span class="text-warning">
+                                                        @for (int i = 0; i < feedback.Rating; i++)
+                                                        {
+                                                            <i class="bi bi-star-fill"></i>
+                                                        }
+                                                    </span>
+                                                </div>
+                                                <div class="card-text">
+                                                    <strong>Comment:</strong> @feedback.Comment
+                                                </div>
+                                                <div class="card-text">
+                                                    <strong>Date:</strong> @feedback.Date.ToShortDateString()
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-warning">No feedbacks available.</div>
+                            }
+                        </div>
+                        <div class="tab-pane fade" id="profile-appointments">
+                            <h5 class="card-title" style="color: var(--color-primary);"><strong>Appointments</strong></h5>
+                            <div class="table-responsive">
+                                <table class="table table-striped appointment-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Marketing Agency</th>
+                                            <th>Requested Start Time</th>
+                                            <th>Requested End Time</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var appointment in ViewBag.Appointments)
+                                        {
+                                            <tr>
+                                                <td>@appointment.MarketingAgency.Username</td>
+                                                <td>@appointment.StartDateTime.ToString("g")</td>
+                                                <td>@appointment.EndDateTime.ToString("g")</td>
+                                                <td>@appointment.Status</td>
+                                                <td>
+                                                    @if (appointment.Status == "Pending")
+                                                    {
+                                                        <form asp-controller="Customer" asp-action="DeclineRequest" method="post" style="display:inline;">
+                                                            <input type="hidden" name="appointmentId" value="@appointment.AppointmentId" />
+                                                            <button type="submit" class="btn btn-danger">Cancel</button>
+                                                        </form>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="profile-proposals">
+                            <h5 class="card-title" style="color: var(--color-primary);"><strong>Proposals</strong></h5>
+                            <div class="table-responsive">
+                                <table class="table proposal-table table-striped">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>Marketing Agency</th>
+                                            <th>Min Budget ($)</th>
+                                            <th>Max Budget ($)</th>
+                                            <th>Details</th>
+                                            <th>Status</th>
+                                            <th>Rejection Reason</th>
+                                            <th>Acceptance Notes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var proposal in ViewBag.Proposals)
+                                        {
+                                            if (proposal.Status != "Rejected")
+                                            {
+                                                <tr>
+                                                    <td>@proposal.MarketingAgency.Username</td>
+                                                    <td>@proposal.MinBudget $</td>
+                                                    <td>@proposal.MaxBudget $</td>
+                                                    <td>@proposal.Details</td>
+                                                    <td>@proposal.Status</td>
+                                                    <td>@proposal.RejectionReason</td>
+                                                    <td>@proposal.AcceptanceNotes</td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="profile-stats">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">Appointment Statistics</div>
+                                        <div class="card-body">
+
+                                            <canvas id="appointmentChart" width="400" height="200"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">Proposal Statistics</div>
+                                        <div class="card-body">
+
+                                            <canvas id="proposalChart" width="400" height="200"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card mb-3">
+                                        <div class="card-header">Total Appointments</div>
+                                        <div class="card-body">
+
+                                            <p class="card-text">@ViewBag.TotalAppointments</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card mb-3">
+                                        <div class="card-header">Total Proposals</div>
+                                        <div class="card-body">
+
+                                            <p class="card-text">@ViewBag.TotalProposals</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card mb-3">
+                                        <div class="card-header">Total Feedbacks</div>
+                                        <div class="card-body">
+
+                                            <p class="card-text">@ViewBag.PostedFeedbacksCount</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            Budget Statistics for Proposals
+                                        </div>
+                                        <div class="card-body">
+                                            <p>Minimum Budget: @ViewBag.MinBudget</p>
+                                            <p>Maximum Budget: @ViewBag.MaxBudget</p>
+                                            <p>Average Budget: @ViewBag.AvgBudget</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    // JavaScript to create and update the Appointment Statistics chart
+    document.addEventListener('DOMContentLoaded', function () {
+        var acceptedCount = @Html.Raw(Json.Serialize(ViewBag.AcceptedCount));
+        var canceledCount = @Html.Raw(Json.Serialize(ViewBag.CanceledCount));
+        var rejectedCount = @Html.Raw(Json.Serialize(ViewBag.RejectedCount));
+        var pendingCount = @Html.Raw(Json.Serialize(ViewBag.PendingCount));
+
+        var ctx = document.getElementById('appointmentChart').getContext('2d');
+        var appointmentChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Accepted', 'Canceled', 'Rejected', 'Pending'],
+                datasets: [{
+                    label: 'Appointments',
+                    data: [acceptedCount, canceledCount, rejectedCount, pendingCount],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.2)', // Accepted
+                        'rgba(255, 99, 132, 0.2)', // Canceled
+                        'rgba(255, 205, 86, 0.2)', // Rejected
+                        'rgba(54, 162, 235, 0.2)' // Pending
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 205, 86, 1)',
+                        'rgba(54, 162, 235, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+
+
+    var ctx = document.getElementById('proposalChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Accepted', 'Pending', 'Rejected'], // Labels for proposal statuses
+            datasets: [{
+                label: 'Proposal Status',
+                data: [@ViewBag.AcceptedProposalsCount, @ViewBag.PendingProposalsCount, @ViewBag.RejectedProposalsCount], // Data counts for each status
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.6)',   // Blue for Accepted
+                    'rgba(255, 206, 86, 0.6)',   // Yellow for Pending
+                    'rgba(255, 99, 132, 0.6)'    // Red for Rejected
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>

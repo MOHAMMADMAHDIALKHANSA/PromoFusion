@@ -1,6 +1,6 @@
 ﻿@page
 @model RegisterModel
-
+<script src="~/assets/js/main.js"></script>
 <style>
     /* Styles specific to the registration page */
 
@@ -21,12 +21,27 @@
     }
 
         .register-container:hover {
-            box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5); /* add shadow on hover */
+            box-shadow: 0px 0px 20px 0px #fd5f00; /* add shadow on hover */
         }
 
     .register-wrapper {
-        /* Add your styles for the registration form wrapper */
+        width: 100%;
+        border-radius: 5px;
+        box-shadow: 0px 4px 10px 1px rgba(0, 0, 0, 0.1);
     }
+
+    .register-wrapper .title {
+        height: 90px;
+        border-radius: 5px 5px 0 0;
+        color: #fff;
+        font-size: 30px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+            background-color: #fd5f00;
+    }
+
 
     .btn {
         margin-top: 10px;
@@ -49,20 +64,20 @@
 
 <div class="register-container">
     <div class="register-wrapper">
-        <div class="card shadow border-0 mt-4">
-            <div class="card-header bg-gradient ml-0 py-4" style="color:#008374;">
+        <div class="card shadow border-0 mt-2">
+            <div class="card-header bg-gradient ml-0 py-3" style="background:#fd5f00; box-shadow: 0px 0px 20px 0px #fd5f00">
                 <div class="row">
                     <div class="col-12 text-center">
-                        <h2 class="py-2" style="color: var(--color-primary);">Register</h2>
+                        <h2 class="title">Register</h2>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="card-body p-4">
+        <div class="card-body p-4" style=" box-shadow: 0px 0px 20px 0px #fd5f00">
             <div class="row pt-3">
                 <div class="col-md-12">
                     <form id="registerForm" class="row" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                        <h3 class="border-bottom pb-3 mb-4 text-center" style="color: var(--color-primary);" style="color: var(--color-primary);">Create a new account.</h3>
+                        <h3 class="border-bottom pb-3 mb-4 text-center" style="color: #fd5f00;" style="color: var(--color-primary);">Create a new account.</h3>
                         <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                         <div class="form-floating mb-3 col-12">
                             <input asp-for="Input.Name" class="form-control" aria-required="true" placeholder="name@example.com" />
@@ -85,9 +100,10 @@
                             <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                         </div>
                         <div class="form-floating mb-3 col-md-6">
-                            <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select text-secondary">
+                            <select asp-for="Input.Role" asp-items="@Model.Input.RoleList.Where(r => r.Text != "Administrator")" class="form-select text-secondary">
                                 <option disabled selected style="color: var(--color-primary);">-Select role-</option>
                             </select>
+
                         </div>
                         <div class="col-12">
                             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>

@@ -1,50 +1,52 @@
-﻿@model IEnumerable<MarketingHub.Models.MarketingAgency>
+﻿
+@model MarketingHub.Models.IndexViewModel
+
 
 @{
     ViewData["Title"] = "Marketing Agencies";
 }
+<script src="~/assets/js/main.js"></script>
 <style>
-
     body {
-        background-image: url('https://convertingcolors.com/radial-008374.svg'); /* Set the background image of the page */
-        background-size: cover; /* Cover the entire background */
-        background-repeat: no-repeat; /* Do not repeat the background image */
+        background-image: url('https://convertingcolors.com/radial-008374.svg');
+        background-size: cover;
+        background-repeat: no-repeat;
     }
 
     .custom-card {
-        height: 350px; /* Set a fixed height for the card */
-        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow transition */
-        max-width: 300px; /* Decreased the width of the cards */
-        overflow: hidden; /* Hide any overflow */
+        height: 375px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        max-width: 300px;
+        overflow: hidden;
     }
 
-    .custom-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0 20px #265073; /* Added box-shadow */
-    }
+        .custom-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px #265073;
+        }
 
     .rounded-img-container {
-        height: 150px; /* Set a fixed height for the image container */
-        width: 150px; /* Set a fixed width for the image container */
-        overflow: hidden; /* Hide any overflow */
-        border-radius: 50%; /* Create circular image container */
-        border: 5px solid #fff; 
-        box-shadow: 0 0 10px #fd5f00; 
-        margin: 20px auto 10px auto; 
+        height: 150px;
+        width: 150px;
+        overflow: hidden;
+        border-radius: 50%;
+        border: 5px solid #fff;
+        box-shadow: 0 0 10px #fd5f00;
+        margin: 20px auto 10px auto;
     }
 
     .rounded-img {
-        width: 100%; /* Ensure the image fills the container */
-        height: 100%; /* Ensure the image fills the container */
-        object-fit: cover; /* Maintain aspect ratio */
-        border-radius: 50%; /* Create circular image */
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
     }
 
     .center-top {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100%; /* Adjust height to center the image */
+        height: 100%;
     }
 
     .card-title {
@@ -55,35 +57,61 @@
         margin-bottom: 10px;
     }
 
-    .rating i {
-        color: #eeff00;
+        .rating i {
+            color: #eeff00;
+        }
+
+    .info {
+        transition: opacity 0.3s ease;
     }
 
+    .buttons {
+        transition: opacity 0.3s ease;
+        opacity: 0; /* Initially hide the buttons */
+        position: absolute; /* Position buttons to be on top of info */
+        top: 75%; /* Adjust as needed to match the info position */
+        left: 50%;
+        transform: translate(-50%, -50%); /* Center the buttons */
+        width: 100%; /* Ensure buttons take full width */
+        
+        alignS-content: center;
+    }
+
+    .custom-card:hover .info {
+        opacity: 0; /* Hide category and contract type info on hover */
+    }
+
+    .custom-card:hover .buttons {
+        opacity: 1; /* Show buttons on hover */
+    }
     .btn {
         margin-top: 10px;
-        margin-right: 5px; /* Added margin between buttons */
-        font-size: 16px;
-        padding: 10px 20px;
+        margin-right: 5px;
+        font-size: 12px;
         background-color: #008080;
         color: #fff;
         border: 2px solid #008080;
-        border-radius: 25px;
         transition: all 0.3s ease;
-        display: none; /* Initially hide buttons */
+        display: none;
+        padding: 5px 10px; /* Adjusted padding */
+        border-radius: 5px;
     }
 
     .custom-card:hover .btn {
-        display: inline-block; /* Show buttons when hovering over the card */
+        display: inline-block;
     }
 
     .btn:hover {
         background-color: #fff;
         color: #008080;
+        font-size: 12px; /* Keep the same size on hover */
+        padding: 5px 10px;
     }
-      .search-form {
+
+    .search-form {
         display: flex;
         align-items: center;
-        margin-bottom: 20px; 
+        margin-bottom: 20px;
     }
 
     .search-input {
@@ -91,7 +119,7 @@
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
-        margin-right: 10px; 
+        margin-right: 10px;
         font-size: 16px;
     }
 
@@ -105,12 +133,33 @@
         cursor: pointer;
     }
 
-        .search-button:hover {
-            background-color: #005353;
-        }
-   
+    .search-button:hover {
+        background-color: #005353;
+    }
 
+    .d-flex::-webkit-scrollbar {
+        width: 10px; /* Set the width of the scrollbar */
+    }
+
+    .d-flex::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Color of the scrollbar track */
+    }
+    
+    .d-flex::-webkit-scrollbar-thumb {
+        background-color: #888; /* Color of the scrollbar thumb */
+        border-radius: 5px; /* Rounded corners of the scrollbar thumb */
+    }
+
+        .d-flex::-webkit-scrollbar-thumb:hover {
+            background-color: #555; /* Color of the scrollbar thumb on hover */
+        }
 </style>
+@if (TempData["Notification"] != null)
+{
+    <div class="alert alert-info" role="alert">
+        @TempData["Notification"]
+    </div>
+}
 
 <div class="container mt-4">
     <div class="row pt-4 pb-3">
@@ -118,26 +167,129 @@
             <h2 style="color: var(--color-primary);">Agency<span style="color: #fd5f00;">List</span></h2>
         </div>
         <div class="col-6 text-end">
-            <form asp-action="Index" method="get">
-                 <div class="input-group">
-                    <input type="text" name="search" class="search-input form-control" placeholder="Search by Name">
-                    <button type="submit" class=" search-button  btn-primary">Search</button>
+            <form asp-action="Index" method="get" class="search-form">
+                <div class="input-group">
+                    <input type="text" name="search" class="search-input form-control" placeholder="Search by Name" value="@Model.Search">
+                    <select name="categoryId" class="form-control">
+                        <option value="">All Categories</option>
+                        @foreach (var category in Model.Categories)
+                        {
+                            <option value="@category.CategoryId" selected="@((category.CategoryId == Model.CategoryId).ToString().ToLower())">@category.Name</option>
+                        }
+                    </select>
+                    <select name="contractTypeId" class="form-control">
+                        <option value="">All Contract Types</option>
+                        @foreach (var contractType in Model.ContractTypes)
+                        {
+                            <option value="@contractType.ContractTypeId" selected="@((contractType.ContractTypeId == Model.ContractTypeId).ToString().ToLower())">@contractType.Name</option>
+                        }
+                    </select>
+                    <button type="submit" class="search-button btn-primary">Search</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
+@if (Model.RecommendedAgencies.Any())
+{
+    <div class="container">
+        <h3>Recommended Agencies for You</h3>
+        <div class="row">
+            <div class="container-fluid py-2">
+                <div class="d-flex flex-row flex-nowrap" style="overflow-x: auto;">
+                    @foreach (var agency in Model.RecommendedAgencies)
+                    {
+                        <div class="col-md-4 mb-4">
+                            <div class="card custom-card">
+                                <a asp-controller="Customer" asp-action="Details" asp-route-id="@agency.MarketingAgencyId" class="card-link">
+                                    <div class="rounded-img-container">
+                                        <div class="center-top">
+                                            <img src="@agency.ImageUrl" class="rounded-img" alt="Agency Image">
+                                        </div>
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">@agency.Username</h5>
+                                        <div class="info">
+                                            <div class="rating">
+                                                @for (var i = 0; i < agency.Rating; i++)
+                                                {
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                }
+                                            </div>
+                                            <p class="agency-info" style="color: #fd5f00;">
+                                                @foreach (var category in agency.MarketingAgencyCategories)
+                                                {
+                                                    @category.Category.Name
+                                                    @if (category != agency.MarketingAgencyCategories.Last())
+                                                    {
+                                                        <text>, </text>
+                                                    }
+                                                }
+                                            </p>
+                                            <p class="agency-info" style="color: #fd5f00;">
+                                                @foreach (var contractType in agency.MarketingAgencyContractTypes)
+                                                {
+                                                    @contractType.ContractType.Name
+                                                    @if (contractType != agency.MarketingAgencyContractTypes.Last())
+                                                    {
+                                                        <text>, </text>
+                                                    }
+                                                }
+                                            </p>
+                                        </div>
+                                        <div class="buttons">
+                                            <a asp-controller="Customer" asp-action="Details" asp-route-id="@agency.MarketingAgencyId" class="btn btn-primary">Details</a>
+                                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#bookAppointmentModal-@agency.MarketingAgencyId">Appointment</button>
+                                            <a asp-controller="Customer" asp-action="CreateProposal" asp-route-id="@agency.MarketingAgencyId" class="btn btn-info">Proposal</a>
+                                            <a asp-controller="Payment" asp-action="Index" asp-route-marketingAgencyId="@agency.MarketingAgencyId" asp-route-amount="100" class="btn btn-warning">Pay</a>
+                                            <a asp-controller="Customer" asp-action="CreateReport" asp-route-marketingAgencyId="@agency.MarketingAgencyId" class="btn btn-danger">Report Agency</a>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
 
-@{
-    int columnCount = 0;
+                            <!-- Appointment Modal -->
+                            <div class="modal fade" id="bookAppointmentModal-@agency.MarketingAgencyId" tabindex="-1" aria-labelledby="bookAppointmentModalLabel-@agency.MarketingAgencyId" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="bookAppointmentModalLabel-@agency.MarketingAgencyId">Book Appointment with @agency.Username</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form asp-controller="Customer" asp-action="Book" method="post">
+                                                <input type="hidden" name="MarketingAgencyId" value="@agency.MarketingAgencyId" />
+                                                <div class="mb-3">
+                                                    <label for="startDateTime" class="form-label">Start Date and Time</label>
+                                                    <input type="datetime-local" class="form-control" id="startDateTime" name="startDateTime" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="endDateTime" class="form-label">End Date and Time</label>
+                                                    <input type="datetime-local" class="form-control" id="endDateTime" name="endDateTime" required>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Book Appointment</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+        </div>
+    </div>
+    </div>
+    </div>
 }
 
 <div class="container">
+    <h3>Agencies</h3>
     <div class="row">
-        @foreach (var agency in Model)
+        @foreach (var agency in Model.MarketingAgencies)
         {
             <div class="col-md-4">
+                <a asp-controller="Customer" asp-action="Details" asp-route-id="@agency.MarketingAgencyId" class="card-link">
+
                 <div class="card custom-card mb-4">
                     <div class="rounded-img-container">
                         <div class="center-top">
@@ -145,29 +297,76 @@
                         </div>
                     </div>
                     <div class="card-body text-center">
-                        <h5 class="card-title text-a">@agency.Username</h5>
-                        <div class="rating">
-                            @for (var i = 0; i < agency.Rating; i++)
+                        <h5 class="card-title">@agency.Username</h5>
+                        
+                        <div class="info">
+                                <div class="rating">
+                                    @for (var i = 0; i < agency.Rating; i++)
+                                    {
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    }
+                                </div>
+                        <p class="agency-info" style="color: #fd5f00;">
+                            @foreach (var category in agency.MarketingAgencyCategories)
                             {
-                                <i class="fa fa-star" aria-hidden="true"></i>
+                                @category.Category.Name
+                                @if (category != agency.MarketingAgencyCategories.Last())
+                                {
+                                    <text>, </text>
+                                }
                             }
+                        </p>
+                        <p class="agency-info" style="color: #fd5f00;">
+                            @foreach (var contractType in agency.MarketingAgencyContractTypes)
+                            {
+                                @contractType.ContractType.Name
+                                @if (contractType != agency.MarketingAgencyContractTypes.Last())
+                                {
+                                    <text>, </text>
+                                }
+                            }
+                        </p>
                         </div>
                         <div class="buttons">
-                            <a asp-controller="Customer" asp-action="Details" asp-route-id="@agency.MarketingAgencyId" class="btn btn-primary">View Details</a>
-                            <a asp-controller="Customer" asp-action="Register" asp-route-id="@agency.MarketingAgencyId" class="btn btn-success">Register</a>
+                            <a asp-controller="Customer" asp-action="Details" asp-route-id="@agency.MarketingAgencyId" class="btn btn-primary">Details</a>
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#bookAppointmentModal-@agency.MarketingAgencyId">Appointment</button>
+                            <a asp-controller="Customer" asp-action="CreateProposal" asp-route-id="@agency.MarketingAgencyId" class="btn btn-info">Proposal</a>
+                            <a asp-controller="Payment" asp-action="Index" asp-route-marketingAgencyId="@agency.MarketingAgencyId" asp-route-amount="100" class="btn btn-warning">Pay</a>
+                            <a asp-controller="Customer" asp-action="CreateReport" asp-route-marketingAgencyId="@agency.MarketingAgencyId" class="btn btn-danger">Report Agency</a>
+                        </div>
+                    </div>
+                </div>
+                </a>
+            </div>
+            <!-- Appointment Modal -->
+            <div class="modal fade" id="bookAppointmentModal-@agency.MarketingAgencyId" tabindex="-1" aria-labelledby="bookAppointmentModalLabel-@agency.MarketingAgencyId" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="bookAppointmentModalLabel-@agency.MarketingAgencyId">Book Appointment with @agency.Username</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form asp-controller="Customer" asp-action="Book" method="post">
+                                <input type="hidden" name="MarketingAgencyId" value="@agency.MarketingAgencyId" />
+                                <div class="mb-3">
+                                    <label for="startDateTime" class="form-label">Start Date and Time</label>
+                                    <input type="datetime-local" class="form-control" id="startDateTime" name="startDateTime" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="endDateTime" class="form-label">End Date and Time</label>
+                                    <input type="datetime-local" class="form-control" id="endDateTime" name="endDateTime" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Book Appointment</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-
-            @if (++columnCount % 3 == 0) 
-            {
-                @:</div> <!-- Close the row if three cards are displayed -->
-                @if (columnCount < Model.Count()) 
-                {
-                    @:<div class="row"> <!-- Start a new row if there are more agencies -->
-                }
-            }
         }
     </div>
 </div>
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybU5loB8bRZARlpiq31K5go+/V1pGFlJRm8rRXbggtv+fOonA" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js" integrity="sha384-cuDk7RXAhKs8gVfFevm64JtA9f3lWx7Eq03U8i9E8Y4nphe+1xgIqGtt/45b8g2T" crossorigin="anonymous"></script>
+}

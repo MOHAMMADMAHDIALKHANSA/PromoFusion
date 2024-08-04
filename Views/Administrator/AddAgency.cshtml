@@ -3,95 +3,181 @@
 @{
     ViewData["Title"] = "Create Marketing Agency";
 }
-<a asp-controller="Administrator" asp-action="Index" class="btn btn-primary">Back to Agencies</a>
-<br />
-<br />
-<h1>Add Location</h1>
-<form asp-action="ProcessAddAgency" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <!-- Location Fields -->
-    <div class="form-group">
-        <label asp-for="@Model.Location.City">City:</label>
-        <input asp-for="@Model.Location.City" class="form-control" />
-        <span asp-validation-for="@Model.Location.City" class="text-danger"></span>
-    </div>
+<script src="~/assets/js/main.js"></script>
 
-    <div class="form-group">
-        <label asp-for="@Model.Location.ImageUrl">Image URL:</label>
-        <input asp-for="@Model.Location.ImageUrl" class="form-control" />
-        <span asp-validation-for="@Model.Location.ImageUrl" class="text-danger"></span>
-    </div>
+<style>
+    body {
+        background-image: url('https://convertingcolors.com/radial-008374.svg'); /* Set the background image of the page */
+        background-size: cover; /* Cover the entire background */
+        background-repeat: no-repeat; /* Do not repeat the background image */
+    }
 
-    <div class="form-group">
-        <label asp-for="@Model.Location.PostalCode">Postal Code:</label>
-        <input asp-for="@Model.Location.PostalCode" class="form-control" />
-        <span asp-validation-for="@Model.Location.PostalCode" class="text-danger"></span>
-    </div>
+    .btn {
+        margin-top: 10px;
+        font-size: 16px;
+        padding: 10px 20px;
+        background-color: #008080;
+        color: #fff;
+        border: none;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
 
-    <div class="form-group">
-        <label asp-for="@Model.Location.BuildingName">Building Name:</label>
-        <input asp-for="@Model.Location.BuildingName" class="form-control" />
-        <span asp-validation-for="@Model.Location.BuildingName" class="text-danger"></span>
-    </div>
+        .btn:hover {
+            background-color: #fd5f00;
+            color: #fff;
+        }
 
-    <div class="form-group">
-        <label asp-for="@Model.Location.Region">Region:</label>
-        <input asp-for="@Model.Location.Region" class="form-control" />
-        <span asp-validation-for="@Model.Location.Region" class="text-danger"></span>
-    </div>
+    .form-section {
+        margin-bottom: 20px;
+        border: 1px solid #e9ecef;
+        padding: 20px;
+        border-radius: 5px;
+        background-color: #f8f9fa;
+    }
 
-    <div class="form-group">
-        <label asp-for="@Model.Location.UrlRoute">URL Route:</label>
-        <input asp-for="@Model.Location.UrlRoute" class="form-control" />
-        <span asp-validation-for="@Model.Location.UrlRoute" class="text-danger"></span>
-    </div>
+        .form-section h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
 
+    .form-group {
+        margin-bottom: 20px;
+    }
 
-    <h1 class="mt-5">Create Marketing Agency</h1>
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="form-group">
-        <label asp-for="Username">Username:</label>
-        <input asp-for="Username" class="form-control" />
-        <span asp-validation-for="Username" class="text-danger"></span>
-    </div>
+    .form-control {
+        border-radius: 5px;
+    }
 
-    <div class="form-group">
-        <label asp-for="Salary">Salary:</label>
-        <input asp-for="Salary" class="form-control" />
-        <span asp-validation-for="Salary" class="text-danger"></span>
-    </div>
+    .text-danger {
+        font-size: 0.875rem;
+    }
+</style>
 
-    <div class="form-group">
-        <label asp-for="Email">Email:</label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
+<div class="container mt-4">
+    <h1 style="color: var(--color-primary);">Add Location</h1>
+    <hr />
 
-    <div class="form-group">
-        <label asp-for="PhoneNumber">Phone Number:</label>
-        <input asp-for="PhoneNumber" class="form-control" />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>
+    <!-- Form for Adding Agency -->
+    <form asp-action="ProcessAddAgency" method="post">
 
-    <div class="form-group">
-        <label asp-for="Description">Description:</label>
-        <input asp-for="Description" class="form-control" />
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
+        <!-- Validation Summary -->
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <div class="form-group">
-        <label asp-for="Rating">Rating:</label>
-        <input asp-for="Rating" class="form-control" min="1" max="5" />
-        <span asp-validation-for="Rating" class="text-danger"></span>
-    </div>
+        <!-- Location Section -->
+        <div class="form-section">
+            <h2>Location Details</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="@Model.Location.City" style="color: var(--color-primary);">City:</label>
+                        <input asp-for="@Model.Location.City" class="form-control" style="color: var(--color-primary);" />
+                        <span asp-validation-for="@Model.Location.City" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Location.PostalCode" style="color: var(--color-primary);">Postal Code:</label>
+                        <input asp-for="@Model.Location.PostalCode" class="form-control" style="color: var(--color-primary);" />
+                        <span asp-validation-for="@Model.Location.PostalCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Location.BuildingName" style="color: var(--color-primary);">Building Name:</label>
+                        <input asp-for="@Model.Location.BuildingName" class="form-control" style="color: var(--color-primary);" />
+                        <span asp-validation-for="@Model.Location.BuildingName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="@Model.Location.Region" style="color: var(--color-primary);">Region:</label>
+                        <input asp-for="@Model.Location.Region" class="form-control" style="color: var(--color-primary);" />
+                        <span asp-validation-for="@Model.Location.Region" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Location.UrlRoute" style="color: var(--color-primary);">URL Route:</label>
+                        <input asp-for="@Model.Location.UrlRoute" class="form-control" style="color: var(--color-primary);" />
+                        <span asp-validation-for="@Model.Location.UrlRoute" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Location.ImageUrl" style="color: var(--color-primary);">Image URL:</label>
+                        <input asp-for="@Model.Location.ImageUrl" class="form-control" style="color: var(--color-primary);" />
+                        <span asp-validation-for="@Model.Location.ImageUrl" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="ImageUrl">Image URL:</label>
-        <input asp-for="ImageUrl" class="form-control" />
-        <span asp-validation-for="ImageUrl" class="text-danger"></span>
-    </div>
+        <!-- Marketing Agency Profile Section -->
+        <div class="form-section">
+            <h2 style="color: var(--color-primary);">Marketing Agency Details</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Username" style="color: var(--color-primary);">Username:</label>
+                        <input asp-for="Username" class="form-control" style="color: var(--color-primary);" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Salary" style="color: var(--color-primary);">Salary:</label>
+                        <input asp-for="Salary" class="form-control" style="color: var(--color-primary);" />
+                        <span asp-validation-for="Salary" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" style="color: var(--color-primary);">Email:</label>
+                        <input asp-for="Email" class="form-control" style="color: var(--color-primary);" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
 
+                                        <div class="form-group">
+                        <label asp-for="Twitter" style="color: var(--color-primary);">Twitter:</label>
+                        <input asp-for="Twitter " class="form-control" style="color: var(--color-primary);" />
+                        <span asp-validation-for="Twitter" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Facebook" style="color: var(--color-primary);">Facebook:</label>
+                        <input asp-for="Facebook " class="form-control" style="color: var(--color-primary);" />
+                        <span asp-validation-for="Facebook" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LinkedIn" style="color: var(--color-primary);">LinkedIn:</label>
+                        <input asp-for="LinkedIn " class="form-control" style="color: var(--color-primary);" />
+                        <span asp-validation-for="LinkedIn" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber" style="color: var(--color-primary);">Phone Number:</label>
+                        <input asp-for="PhoneNumber" class="form-control" style="color: var(--color-primary);" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" style="color: var(--color-primary);">Description:</label>
+                        <textarea asp-for="Description" class="form-control" rows="3" style="color: var(--color-primary);"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
 
-    <button type="submit" class="btn btn-primary mt-4">Save Agency</button>
-</form>
+                    <div class="form-group">
+                        <label asp-for="ImageUrl" style="color: var(--color-primary);">Image URL:</label>
+                        <input asp-for="ImageUrl" class="form-control" style="color: var(--color-primary);" />
+                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                    </div>
+                         <div class="form-group">
+                        <label asp-for="Instagram" style="color: var(--color-primary);">Instagram:</label>
+                        <input asp-for="Instagram " class="form-control" style="color: var(--color-primary);" />
+                        <span asp-validation-for="Instagram" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden Fields for IDs -->
+        <input asp-for="MarketingAgencyId" hidden />
+        <input asp-for="LocationId" hidden />
+        <input asp-for="UserId" hidden />
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary mt-4">Save Agency</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+
+    </form>
+</div

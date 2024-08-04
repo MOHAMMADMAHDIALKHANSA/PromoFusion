@@ -6,6 +6,7 @@ namespace MarketingHub.Models
     public class Location
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int LocationId { get; set; } = 0;
 
         [Required(ErrorMessage = "City is required")]
